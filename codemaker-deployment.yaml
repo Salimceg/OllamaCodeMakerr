@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-codemaker-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ai-codemaker-app
+  template:
+    metadata:
+      labels:
+        app: ai-codemaker-app
+    spec:
+      containers:
+      - name: ai-codemaker-container
+        image: my-flask-app
+        ports:
+        - containerPort: 5055
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-codemaker-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ai-codemaker-app
+  template:
+    metadata:
+      labels:
+        app: ai-codemaker-app
+    spec:
+      containers:
+      - name: ai-codemaker-container
+        image: my-flask-app
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5055
+

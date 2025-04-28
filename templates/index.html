@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="eng">
+<head>
+    <meta charset="UTF-8">
+    <title>AI-Powered Code Generator</title>
+
+    <style>
+        .actual-code{
+            display: block;
+            padding: 1em;
+            background-color: #f4f4f4;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-family: Consolas, Monaco, 'Courier New', monospace;
+            font-size: 14px;
+            white-space: pre-wrap; 
+            word-break: break-word; 
+        }
+        </style>
+        
+</head>
+<body>
+    <h1>AI-Powered Code Generator</h1>
+
+    <form method="POST" action="/generate">
+        <label for="prompt">Write something...:</label><br>
+        <textarea id="prompt" name="prompt" rows="5" cols="50" placeholder="For example: A python code..."></textarea><br><br>
+        <input type="submit" value="Lets make ">
+    </form>
+
+    {% if title %}
+        <h2> {{ title }}</h2>
+        <pre><code>{{ code | replace('\\n', '<br>') | safe }}</code></pre>
+    {% endif %}
+</body>
+</html>
