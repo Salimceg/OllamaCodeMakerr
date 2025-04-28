@@ -1,64 +1,106 @@
 Yerel LLM Projesi Notlarım (Ollama + Flask)
 
-1. Homebrew Kurulumu (Mac için)
-- Homebrew yükle:
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-- Homebrew'u kalıcı yapmak için:
-  echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
-  eval "$(/opt/homebrew/bin/brew shellenv)"
+Homebrew Kurulumu (Mac için)
 
-2. Ollama Kurulumu
-- Ollama yükle:
-  brew install ollama
-- Ollama servisini çalıştır:
-  ollama serve
-**yüklendikten sonra başka bir terminal açıp test edebilirsin
-- Mistral modeli indir ve çalıştır:
-  ollama run mistral(Açık kaynak llm modeli)
+Homebrew yükle: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-3. Flask Projesi Kurulumu
-- Bir klasör oluştur içine dosyaları oluştur:
-  - app.py,templates/index.html,requirements.txt
+Homebrew'u kalıcı yapmak için: echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile eval "$(/opt/homebrew/bin/brew shellenv)"
 
-4. Gereken Python Kütüphanelerini Kur
-- requirements.txt içine şunları yaz:
-  flask ,requests (Kütüphaneler)
-- Terminalde:
-  pip install -r requirements.txt 
-** pip install flask diyip ayrı ayrı da kurabilirsin 
+Ollama Kurulumu
 
-5. Flask API Dosyası
-- Kullanıcıdan prompt alır.
-- Ollama'ya post isteği gönderir.
-- Cevabı web sitesinde gösterir.
+Ollama yükle: brew install ollama
+
+Ollama servisini çalıştır: ollama serve **yüklendikten sonra başka bir terminal açıp test edebilirsin
+
+Mistral modeli indir ve çalıştır: ollama run mistral (Açık kaynak llm modeli)
+
+Flask Projesi Kurulumu
+
+Bir klasör oluştur içine dosyaları oluştur:
+
+app.py, templates/index.html, requirements.txt
+
+Gereken Python Kütüphanelerini Kur
+
+requirements.txt içine şunları yaz: flask ,requests (Kütüphaneler)
+
+Terminalde: pip install -r requirements.txt ** pip install flask diyip ayrı ayrı da kurabilirsin
+
+Flask API Dosyası
+
+Kullanıcıdan prompt alır.
+
+Ollama'ya post isteği gönderir.
+
+Cevabı web sitesinde gösterir.
 
 Önemli:
-- Eğer port 5000 doluysa başka bir port kullan (örnek: 5055)
-**Port doluysa: lsof -i :5055
-  kill -9 PID (PID : process ıd )
 
-app.py sonunda:
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5055, debug=True)
+Eğer port 5000 doluysa başka bir port kullan (örnek: 5055) **Port doluysa: lsof -i :5055 kill -9 PID (PID : process ıd )
 
-6. Çalıştırma Sırası
-- Terminal 1: ollama serve
-- Terminal 2: python3 app.py
-- Tarayıcıdan eriş:
-  http://localhost:5055
+app.py sonunda: if name == "main": app.run(host="0.0.0.0", port=5055, debug=True)
 
-7. Olası Problemler ve Çözümleri
-- Ollama çalışmıyorsa: ollama serve komutu açık mı kontrol et veya farklı terminalde açtın mı bak
-- Kodlar yatay çıkıyorsa:
-  index.html dosyanda {{ code|safe }} kullan?
-- API bağlantı hatası alırsan , Ollama server aktif mi kontrol et
+Çalıştırma Sırası
 
-8. Temel Kavramlar
-- Homebrew: Terminalden program yüklemeye yarar.
-- Ollama: Yerel LLM modeli çalıştırır.
-- Flask: Web sunucusu framework.
-- requests: Başka sunucuya HTTP isteği gönderir.
-- JSON: Veri saklama ve gönderme biçimi.
-- POST: Sunucuya veri gönderme yöntemi.
+Terminal 1: ollama serve
 
+Terminal 2: python3 app.py
+
+Tarayıcıdan eriş: http://localhost:5055
+
+Minikube Üzerinde Çalıştırma
+
+Minikube yükle: brew install minikube
+
+Minikube başlat: minikube start
+
+Docker ortamını minikube'ye taşı: eval $(minikube docker-env)
+
+Flask uygulamasını Docker ile build et: docker build -t my-flask-app .
+
+Deployment YAML dosyasını oluştur (örnek isimler): codemaker-deployment.yaml
+
+Service YAML dosyasını oluştur: codemaker-service.yaml
+
+Kubernetes'e uygula: kubectl apply -f codemaker-deployment.yaml kubectl apply -f codemaker-service.yaml
+
+Minikube ile servisi aç: minikube service ai-codemaker-service
+
+Gelen link ile tarayıcıdan ulaş.
+
+Önemli:
+
+Eğer pod çalışmıyorsa (ImagePullBackOff hatası) Deployment YAML içine: imagePullPolicy: Never ekle.
+
+Port yönlendirmelerini doğru ayarla (Flask portu = Service Target Port = ContainerPort).
+
+Olası Problemler ve Çözümleri
+
+Ollama çalışmıyorsa: ollama serve komutu açık mı kontrol et veya farklı terminalde açtın mı bak
+
+Kodlar yatay çıkıyorsa: index.html dosyanda {{ code|safe }} kullan
+
+API bağlantı hatası alırsan , Ollama server aktif mi kontrol et
+
+Minikube içinde service bulamıyorsan: minikube service list ile tüm servisleri gör.
+
+Temel Kavramlar
+
+Homebrew: Terminalden program yüklemeye yarar.
+
+Ollama: Yerel LLM modeli çalıştırır.
+
+Flask: Web sunucusu framework.
+
+requests: Başka sunucuya HTTP isteği gönderir.
+
+JSON: Veri saklama ve gönderme biçimi.
+
+POST: Sunucuya veri gönderme yöntemi.
+
+Minikube: Yerel Kubernetes cluster kurmaya yarar.
+
+Docker: Uygulamaları container içinde çalıştırmaya yarar.
+
+Kubernetes: Uygulamaları yönetmek için kullanılan konteyner orkestrasyon sistemi.
 
