@@ -1,56 +1,156 @@
+Project: AI-Powered Code Generator (!!! türkçesi alttadır)
+
+-This repo uses a local LLM (Ollama) to generate Python code.
+
+-Homebrew, Ollama, and Python must be installed.
+(If you don't know how to install them, check the "Notes" section.)
+
+-Activate Ollama using:
+
+bash/ ollama serve
+
+-Then open another terminal and run:
+
+bash/ ollama run mistral
+(to run the open-source LLM model Mistral. We want Ollama to keep running in the background.)
+
+bash/ cd Myproject.py
+
+bash/ pip install -r requirements.txt
+(install necessary Python packages)
+
+python3 app.py
+(Run the Flask application)
+
+http://localhost:5055
+-The server will be running at this address.
+If this port is already in use, you can clean it with:
+
+lsof -i :5055 and kill -9 PID
+
+-Or use a different port.
+
+-After Flask is running, visit http://localhost:5055 from your browser to access the Python code generator interface.
+
+Run on Minikube
+
+-Install Minikube (brew install minikube)
+
+-Start Minikube:
+
+bash/ minikube start
+
+-Set Docker environment to Minikube:
+
+bash/ eval $(minikube docker-env)
+
+-Build your Docker image:
+
+bash/ docker build -t my-flask-app .
+
+-Prepare and apply Deployment and Service YAML files
+(e.g., codemaker-deployment.yaml and codemaker-service.yaml)
+
+bash/ kubectl apply -f codemaker-deployment.yaml
+bash/ kubectl apply -f codemaker-service.yaml
+
+-Access the service via:
+
+bash/ minikube service ai-codemaker-service
+
+-The application interface should open, allowing you to generate Python code.
+
+Possible Issues
+
+-Port already in use:
+Use lsof -i :5055 and kill -9 PID to free the port, or switch to a different port.
+
+-Cannot connect to Ollama API:
+Ensure that Ollama is running in a separate terminal with bash/ ollama serve.
+
+-Minicube pod not running:
+Make sure imagePullPolicy: Never is set in your deployment yaml, and docker image is built inside Minikube's docker-env.
+
+-Requests module not found:
+bash/ pip3 install requests
+
+!!! If pip3 or python3 commands don't work on your system, try pip and python instead.
+This project was developed on MacOS.
+-----------------------------------------------------------------------------------------------------------------
+
+Yapay Zeka Destekli Kod Üretici
 
 -Bu repo yerel llm olan Ollama’yı kullanarak Python kodu üretiyor
 
--Homebre,Ollama,ve Python programları kurulu olmalı
+-Homebrew, Ollama ve Python programları kurulu olmalı
 (Nasıl kurulacağı bilinmiyorsa Notlarım kısmında açıklaması var)
 
 “bash/ ollama serve” komutu kullanılarak ollama aktif edilmeli
 
--ardından farklı bir terminal açıp “bash/ ollama run mistral” mistral indirilip çalıştırılmalı(Ollamanın arka planda çalışmasını istiyoruz)
+-ardından farklı bir terminal açıp “bash/ ollama run mistral” mistral indirilip çalıştırılmalı
+(Ollamanın arka planda çalışmasını istiyoruz)
 
- bash/ cd Myproject.py
--bash/ pip install -r requirements.txt
+bash/ cd Myproject.py
+
+bash/ pip install -r requirements.txt
 gerekli kütüphaneler yüklenmeli
 
 python3 app.py
 -Flask kütüphanesi çalıştırılmalı
 
 http://localhost:5055
--sunucu bu adreste çalışacak eğer bu adresiniz dolu ise 
-lsof -i :5055 ve kill -9 PID (PID : process ıd ) ile port temizlenmeli veya başka bir port kullanılmalı 
+-sunucu bu adreste çalışacak eğer bu adresiniz dolu ise
+lsof -i :5055 ve kill -9 PID (PID : process ıd ) ile port temizlenmeli veya başka bir port kullanılmalı
 
 -Flask kütüphanesi çalıştırıldıktan sonra http://localhost:5055 adresine tarayıcı üzerinden giderek Python kodu üreten arayüze ulaşabilirsiniz
 
+Minikube Üzerinde Çalıştırmak
 
-Olası problemler 
--Port adresi dolu hatası: eğer adresiniz dolu ise 
-lsof -i :5055 ve kill -9 PID (PID : process ıd ) ile port temizlenmeli veya başka bir port kullanılmalı 
+-Minikube kurulumu yapılmalı (brew install minikube)
 
--Ollama API’ye bağlanamıyorsa: Ollama arka planda çalışıyor mu kontorl edilmeli +yeni bir terminal aç ve bash/ ollama serve
+-Minikube başlatılmalı:
 
--request modulü bulunamadı : pip3 install request 
+bash/ minikube start
 
-!!! eğer pip3 python3 gibi bash kodları sizde çalışmıyorsa pip,python gibi kodlar deneyebilirsiniz bu proje mac üzerinden yazılmıştır 
+-Minikube docker ortamı aktif edilmeli:
 
-———————————————————————————————————————————————————————————————————
-This repo generates Python code using a local LLM called Ollama
+bash/ eval $(minikube docker-env)
 
--Homebrew, Ollama, and Python programs must be installed (If you don't know how to install them, there is an explanation in the Notes section)
+-Docker image oluşturulmalı:
 
-“bash/ ollama serve” command must be used to activate ollama
+bash/ docker build -t my-flask-app .
 
--then open a different terminal and “bash/ ollama run mistral”
-mistral should be downloaded and run (we want ollama to run in the background)
+-Deployment ve Service YAML dosyaları hazırlanmalı
+(codemaker-deployment.yaml ve codemaker-service.yaml gibi)
 
-bash/ cd Myproject.py -bash/ pip install -r requirements.txt necessary libraries must be installed
+-YAML dosyaları apply edilerek deployment ve service oluşturulmalı:
 
-python3 app.py -Flask library must be started http://localhost:5055
- -the server will run at this address. If your address is already occupied, you should clean the port with lsof -i :5055 and kill -9 PID (PID: process id) or use a different port
+bash/ kubectl apply -f codemaker-deployment.yaml
+bash/ kubectl apply -f codemaker-service.yaml
 
--After running the Flask library, you can reach the Python code generator interface by going to http://localhost:5055 through your browser
+-Servisi tarayıcıdan açmak için:
 
-Possible problems: -Port address occupied error: if your address is occupied, it should be cleaned with lsof -i :5055 and kill -9 PID (PID: process id) or a different port should be used
--Cannot connect to Ollama API: Check if ollama is running in the background + open a new terminal and bash/ ollama serve
--request module not found: pip3 install requests
+bash/ minikube service ai-codemaker-service
 
-!!! if bash codes like pip3, python3 do not work for you, you can try codes like pip, python instead this project was written on mac
+-Uygulama açıldığında Python kod üreten arayüz çalışacaktır.
+
+Olası Problemler
+
+-Port adresi dolu hatası:
+lsof -i :5055 ve kill -9 PID komutları ile port temizlenmeli veya başka bir port kullanılmalı
+
+-Ollama API’ye bağlanamıyorsa:
+Ollama arka planda çalışıyor mu kontrol edilmeli
+
+yeni bir terminal açıp bash/ ollama serve komutu tekrar çalıştırılmalı
+
+-Minikube podları çalışmıyorsa:
+Deployment dosyasında imagePullPolicy: Never eklenmeli
+ve docker build işlemi minikube docker ortamında yapılmalı
+
+-Request modülü bulunamadı hatası:
+bash/ pip3 install requests
+
+!!! eğer pip3 veya python3 gibi bash kodları sizde çalışmıyorsa pip, python gibi kodlar deneyebilirsiniz.
+Bu proje MacOS üzerinde yazılmıştır.
+
